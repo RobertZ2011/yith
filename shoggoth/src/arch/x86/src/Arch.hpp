@@ -16,16 +16,27 @@ namespace x86 {
             ExtProcessorInfo
         };
 
+        enum class MSR : uint32_t {
+            IA32_EFER = 0xC0000080
+        };
+
         Arch(void);
 
-        static Arch *create(void);
+        static Arch& getInstance(void);
 
         void init(void);
-        ::Console *getConsole(void);
+        ::Console& getConsole(void);
+        ::PageManager& getPageManager(void);
         bool isSupported(char **err);
         void disableInterrupts(void);
         void enableInterrupts(void);
         void halt(void);
+        void enable64Bit(void);
+
+        uint64_t readMSR(MSR msr);
+        void writeMSR(MSR msr, uint64_t value);
+
+        void outb(uint16_t port, uint8_t value);
     };
 }
 #endif

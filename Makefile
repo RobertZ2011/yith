@@ -6,7 +6,9 @@ clean:
 	-make -C sothoth clean
 
 bochs: iso
-	bochs -f bochsrc -q
+	-bochs -f bochsrc -q
+
+qemu: iso
 
 iso: shoggoth/shoggoth.elf
 	cp shoggoth/shoggoth.elf iso/boot/shoggoth.elf

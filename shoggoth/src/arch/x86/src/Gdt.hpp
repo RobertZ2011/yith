@@ -20,10 +20,14 @@ namespace x86 {
             uint8_t baseHighHigh;
         } __attribute__((packed));
 
+        static_assert(sizeof(Entry) == 8, "GDT Entry structure is not 64 bits");
+
         struct Ptr {
             uint16_t limit;
             uint32_t addr;
         } __attribute__((packed));
+
+        static_assert(sizeof(Ptr) == 6, "GDT Ptr structure is not 48 bits");
 
         enum class Type : uint8_t {
             Null = 0x00,
@@ -35,7 +39,7 @@ namespace x86 {
 
     public:
 
-        static Gdt *create(void);
+        static Gdt& getInstance(void);
 
         void setEntry(int index, uint32_t base, uint32_t limit, Type type, bool longMode);
         void init(void);

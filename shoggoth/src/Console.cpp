@@ -12,6 +12,7 @@ void Console::printf(const char *fmt, ...) {
     while(*fmt) {
         if(*fmt != '%') {
             this->putchar(*fmt);
+            fmt++;
             continue;
         }
 

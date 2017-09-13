@@ -14,7 +14,7 @@ namespace x86 {
     public:
         Console(void);
 
-        static Console *create(void);
+        static Console& getInstance(void);
 
         void setForeground(Color);
         void setBackground(Color);

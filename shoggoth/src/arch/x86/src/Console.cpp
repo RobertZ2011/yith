@@ -1,4 +1,5 @@
 #include "Console.hpp"
+#include "../../../memory.hpp"
 
 namespace x86 {
     static Console instance;
@@ -10,8 +11,8 @@ namespace x86 {
         this->ypos = 0;
     }
 
-    Console *Console::create(void) {
-        return &instance;
+    Console& Console::getInstance(void) {
+        return instance;
     }
 
     void Console::setForeground(Color c) {
@@ -28,10 +29,13 @@ namespace x86 {
         uint16_t background = static_cast<uint8_t>(this->background);
 
         if(c == '\n') {
+            this->xpos = 0;
+            this->ypos++;
             return;
         }
 
         if(c == '\t') {
+            this->xpos += 4;
             return;
         }
 
@@ -55,6 +59,11 @@ namespace x86 {
     }
 
     void Console::clear(void) {
-
+        uint16_t foreground = static_cast<uint8_t>(this->foreground);
+        uint16_t background = static_cast<uint8_t>(this->background);
+        uint16_t value = ((foreground | ((background & 0x7) << 4)) << 8) | ' ';
+        memset<uint16_t>((void*) 0x0B8000, value, 80 * 25);
+        this->xpos = 0;
+        this->ypos = 0;
     }
 }

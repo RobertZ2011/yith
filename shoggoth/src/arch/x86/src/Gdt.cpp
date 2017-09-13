@@ -4,12 +4,12 @@
 namespace x86 {
     static Gdt gdtInstance;
 
-    Gdt *Gdt::create(void) {
-        return &gdtInstance;
+    Gdt& Gdt::getInstance(void) {
+        return gdtInstance;
     }
 
     void Gdt::setEntry(int index, uint32_t base, uint32_t limit, Type type, bool longMode) {
-        memset(&this->entries[index], 0, sizeof(Entry));
+        memset<uint8_t>(&this->entries[index], 0, sizeof(Entry));
         this->entries[index].baseLow = base & 0xFFFF;
         this->entries[index].baseHighLow = (base >> 16) & 0xFF;
         this->entries[index].baseHighHigh = (base >> 24) & 0xFF;
@@ -24,7 +24,8 @@ namespace x86 {
     }
 
     void Gdt::init(void) {
-        Ptr ptr;
+        //volatile because otherwise writting to this can get optimized away
+        volatile Ptr ptr;
 
         //setup the entries
         this->setEntry(0, 0, 0, Type::Null ,false); //null segment

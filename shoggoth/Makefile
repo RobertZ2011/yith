@@ -6,7 +6,7 @@ AR := i686-elf-ar
 AS := i686-elf-as
 CFLAGS := -ffreestanding -fno-builtin -nostdlib -mno-red-zone
 CPPFLAGS := $(CFLAGS) -fno-exceptions -fno-rtti -std=c++11
-LDFLAGS := $(CPPFLAGS)
+LDFLAGS := $(CPPFLAGS) -g
 
 CPPFILES := $(wildcard src/*.cpp)
 ASMFILES := $(wildcard src/*.s)
