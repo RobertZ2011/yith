@@ -1,6 +1,9 @@
 .set MAGIC,    0xE85250D6       # multboot2 magic number
 .set ARCH,	   0                # x86 architecture
 
+.set LONG_CS, 0x18
+.set LONG_DS, 0x20
+
 .section .multiboot
 .align 4
 multiboot_start:
@@ -27,8 +30,8 @@ sothoth_data:
 
 #used for the far call to sothoth
 far_call:
-.skip 2 #segment
 .skip 4 #address
+.skip 2 #segment
 
 .extern kmain
 .extern _init
@@ -39,20 +42,25 @@ far_call:
 .type _start, @function
 _start:
 	mov $stack_top, %esp
-	call _init
-
 	#pass the data structure to kmain
 	push $sothoth_data
 	push %ebx
 	push %eax
+
+	call _init
 	call kmain
+
+	add $12, %esp
 	call _fini
 
 	#prepare to call sothoth
 	#select the proper segments
-	mov $0x20, %ax
+	mov $LONG_DS, %ax
 	mov %ax, %ds
 	mov %ax, %ss
+	mov %ax, %es
+	mov %ax, %fs
+	mov %ax, %gs
 
 	#pass the data pointer to sothoth
 	#first argument is passed in rdi according to system V
@@ -61,19 +69,18 @@ _start:
 	#setup the memory structure for the far call
 	#set the code segment
 	mov $far_call, %edx
-	mov $0x16, %ax
-	mov %ax, (%edx)
+	mov $LONG_CS, %ax
+	mov %ax, 4(%edx)
 
 	#set the address
+	mov $sothoth_data, %ecx
 	mov (%ecx), %eax
-	mov %eax, 2(%edx)
+	mov %eax, (%edx)
 
-	#set the segment registers
-	mov $0x20, %ax
-	mov %ax, %ds
-	mov %ax, %ss
+	xchg %bx, %bx
+	lcall *(%edx)
 
-	lcall *sothoth_data
-
+	#should never run, add a magic breakpoint and halt the machine
+	xchg %bx, %bx
 	cli
 	hlt

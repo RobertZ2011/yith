@@ -24,10 +24,10 @@ namespace x86 {
 
         static Arch& getInstance(void);
 
-        void init(void);
+        void init(Multiboot2Info&);
         ::Console& getConsole(void);
         ::PageManager& getPageManager(void);
-        bool isSupported(char **err);
+        bool isSupported(const char **err);
         void disableInterrupts(void);
         void enableInterrupts(void);
         void halt(void);

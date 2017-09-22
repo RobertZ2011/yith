@@ -16,7 +16,7 @@ namespace x86 {
         return instance;
     }
 
-    void Arch::init(void) {
+    void Arch::init(Multiboot2Info& info) {
         Gdt& gdt = Gdt::getInstance();
         Idt& idt = Idt::getInstance();
 
@@ -38,12 +38,13 @@ namespace x86 {
         return PageManager::getInstance();
     }
 
-    bool Arch::isSupported(char **err) {
+    bool Arch::isSupported(const char **err) {
         uint32_t highest;
 
         //get the highest basic function
         asm volatile("cpuid" : "=a"(highest) : "a"(static_cast<uint32_t>(CpuidFunc::HighestFunction)));
         if(highest < static_cast<uint32_t>(CpuidFunc::ExtProcessorInfo)) {
+
             return false;
         }
 

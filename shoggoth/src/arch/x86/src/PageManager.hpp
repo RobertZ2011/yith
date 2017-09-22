@@ -4,7 +4,7 @@
 #include "../../../PageManager.hpp"
 #include <stdint.h>
 
-extern int kernelEnd;
+extern uint8_t kernelEnd;
 
 namespace x86 {
     class Arch;
@@ -44,7 +44,7 @@ namespace x86 {
 
     public:
         static ::PageManager& getInstance(void);
-        void init(::Arch&);
+        void init(::Arch&, Multiboot2Info&);
         void *allocPages(size_t pages);
         void freePages(void *ptr, size_t pages);
         void markAllocated(uint32_t);

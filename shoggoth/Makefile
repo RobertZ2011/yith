@@ -4,7 +4,7 @@ LD := i686-elf-gcc
 CPP := i686-elf-g++
 AR := i686-elf-ar
 AS := i686-elf-as
-CFLAGS := -ffreestanding -fno-builtin -nostdlib -mno-red-zone
+CFLAGS := -ffreestanding -fno-builtin -nostdlib -mno-red-zone -Wall -Werror
 CPPFLAGS := $(CFLAGS) -fno-exceptions -fno-rtti -std=c++11
 LDFLAGS := $(CPPFLAGS) -g
 

@@ -10,12 +10,22 @@ namespace x86 {
         return pageManagerInstance;
     }
 
-    void PageManager::init(::Arch& arch) {
+    void PageManager::init(::Arch& arch, Multiboot2Info& info) {
         uint32_t gig;
         uint32_t pdpt = reinterpret_cast<uint32_t>(&this->pdpt[0]);
         uint32_t end = reinterpret_cast<uint32_t>(&kernelEnd);
-        int allocatedPages;
-        int totalPages;
+        auto module = info.getTag<Multiboot2Info::Type::Module>();
+        uint32_t allocatedPages;
+        uint32_t totalPages;
+
+        //find the end of used pages
+        while(module) {
+            if(module->end > end) {
+                end = module->end;
+            }
+
+            module = info.getTag<Multiboot2Info::Type::Module>(module);
+        }
 
         this->arch = reinterpret_cast<Arch*>(&arch);
 
@@ -42,18 +52,18 @@ namespace x86 {
             totalPages++;
         }*/
 
-        for(int count = 0; count < totalPages; count++) {
+        for(uint32_t count = 0; count < totalPages; count++) {
             uint32_t nextPage = count * PageManager::PageSize;
             this->mapAddress(nextPage, nextPage);
         }
 
         //mark the kernel as allocated
         allocatedPages = end / PageManager::PageSize;
-        if(end & 0xFFFFF) {
+        if(allocatedPages * PageManager::PageSize < end) {
             allocatedPages++;
         }
 
-        for(int count = 0; count < allocatedPages; count++) {
+        for(uint32_t count = 0; count < allocatedPages; count++) {
             this->markAllocated(count * PageManager::PageSize);
         }
     }
