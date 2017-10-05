@@ -1,0 +1,13 @@
+[package]
+name = "kernel"
+version = "0.1.0"
+authors = ["Rob <robert@zieba.site>"]
+publish = false
+
+[lib]
+crate-type = ["staticlib"]
+
+[dependencies]
+rlibc = "1.0"
+common = { path = "common" }
+arch = { path = "arch/x86/arch" }

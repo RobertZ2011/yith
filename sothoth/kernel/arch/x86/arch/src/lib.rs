@@ -1,10 +1,15 @@
+#![no_std]
+#![feature(asm)]
+
+extern crate rlibc;
+extern crate common;
+
 pub mod isr;
 pub mod console;
 mod idt;
 
-
-use arch_trait;
-use console_trait;
+use common::arch_trait;
+use common::console_trait;
 
 struct Arch {
 
