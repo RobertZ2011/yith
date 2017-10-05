@@ -26,6 +26,9 @@ namespace x86 {
         this->getConsole().print("Setting up IDT\n");
         idt.init(*this);
 
+        this->getConsole().print("Enabling SSE2\n");
+        this->enableSSE();
+
         this->getConsole().print("Enabling interrupts\n");
         this->enableInterrupts();
     }
@@ -66,6 +69,18 @@ namespace x86 {
 
     void Arch::enable64Bit(void) {
         return;
+    }
+
+    void Arch::enableSSE(void) {
+        asm volatile(
+            "mov %cr0, %eax\n"
+            "and $0xFFFB, %ax\n"
+            "or $0x2, %ax\n"
+            "mov %eax, %cr0\n"
+            "mov %cr4, %eax\n"
+            "or $0x300, %ax\n"
+            "mov %eax, %cr4\n"
+        );
     }
 
     uint64_t Arch::readMSR(MSR reg) {

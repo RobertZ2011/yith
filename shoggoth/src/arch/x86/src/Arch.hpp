@@ -33,6 +33,8 @@ namespace x86 {
         void halt(void);
         void enable64Bit(void);
 
+        void enableSSE(void);
+
         uint64_t readMSR(MSR msr);
         void writeMSR(MSR msr, uint64_t value);
 

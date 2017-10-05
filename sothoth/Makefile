@@ -7,6 +7,7 @@ AR := x86_64-elf-ar
 AS := x86_64-elf-as
 CFLAGS := -ffreestanding -fno-builtin -nostdlib -mno-red-zone -Wall -Werror -O2
 CPPFLAGS := $(CFLAGS) -fno-exceptions -fno-rtti -std=c++11
+LDFLAGS := --gc-sections
 
 CPPFILES := $(wildcard src/*.cpp)
 ASMFILES :=
@@ -36,7 +37,7 @@ sothoth.elf: libarch.a $(TARGET).json
 	xargo build --target=$(TARGET) --verbose
 	-cp target/$(TARGET)/debug/libsothoth.a .
 	-cp target/$(TARGET)/release/libsothoth.a .
-	$(LD) $(LDFLAGS) -T build/$(ARCH)/linker.ld --gc-sections -o sothoth.elf $(CRTI) $(CRTBEGIN) libarch.a libsothoth.a $(ASMOBJS) $(CPPOBJS) $(COBJS) $(CRTEND) $(CRTN)
+	$(LD) $(LDFLAGS) -T build/$(ARCH)/linker.ld -o sothoth.elf $(CRTI) $(CRTBEGIN) --start-group libarch.a libsothoth.a --end-group $(ASMOBJS) $(CPPOBJS) $(COBJS) $(CRTEND) $(CRTN)
 
 $(TARGET).json:
 	ln -s build/$(ARCH)/$(TARGET).json $(TARGET).json

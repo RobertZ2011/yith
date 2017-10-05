@@ -77,7 +77,6 @@ _start:
 	mov (%ecx), %eax
 	mov %eax, (%edx)
 
-	xchg %bx, %bx
 	lcall *(%edx)
 
 	#should never run, add a magic breakpoint and halt the machine

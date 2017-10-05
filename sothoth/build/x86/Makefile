@@ -7,7 +7,8 @@ CFLAGS := -ffreestanding -fno-builtin -nostdlib -mno-red-zone -Wall -Werror -O2
 CPPFLAGS := $(CFLAGS) -fno-exceptions -fno-rtti -std=c++11
 
 CPPFILES := $(wildcard ../../src/arch/x86/*.cpp)
-ASMFILES := ../../src/arch/x86/start.s
+ASMNAMES := start.s isr.s
+ASMFILES := $(ASMNAMES:%.s=../../src/arch/x86/%.s)
 CFILES := $(wildcard ../../src/arch/x86/*.c)
 CPPOBJS := $(CPPFILES:%.cpp=%.o)
 ASMOBJS := $(ASMFILES:%.s=%.o)
