@@ -1,10 +1,5 @@
 ARCH ?= x86
 
-CC := x86_64-elf-gcc
-LD := x86_64-elf-ld
-CPP := x86_64-elf-g++
-AR := x86_64-elf-ar
-AS := x86_64-elf-as
 CFLAGS := -ffreestanding -fno-builtin -nostdlib -mno-red-zone -Wall -Werror -O2
 CPPFLAGS := $(CFLAGS) -fno-exceptions -fno-rtti -std=c++11
 LDFLAGS := --gc-sections
@@ -14,12 +9,19 @@ CRTEND := $(shell $(CPP) $(CPPFLAGS) -print-file-name=crtend.o)
 CRTI := build/crti.o
 CRTN := build/crtn.o
 
-all: sothoth.elf
+all: $(ARCH) sothoth.elf
 
 clean:
 	-rm build/*.o
 	-rm build/*.a
 	-rm sothoth.elf
+
+x86:
+	$(eval CC := x86_64-elf-gcc)
+	$(eval LD := x86_64-elf-ld)
+	$(eval CPP := x86_64-elf-g++)
+	$(eval AR := x86_64-elf-ar)
+	$(eval AS := x86_64-elf-as)
 
 sothoth.elf:
 	make -C kernel "ARCH=$(ARCH)"

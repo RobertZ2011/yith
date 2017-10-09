@@ -1,7 +1,7 @@
-#.section .bss
-#.align 16
-#fxstate:
-#.skip 512
+.section .bss
+.align 64
+saved_state:
+.skip 512
 
 .section .text
 
@@ -43,6 +43,17 @@ isr 17, 1
 isr 18
 isr 19
 isr 20
+isr 21
+isr 22
+isr 23
+isr 24
+isr 25
+isr 26
+isr 27
+isr 28
+isr 29
+isr 30
+isr 31
 
 .extern isr_handler
 
@@ -76,16 +87,40 @@ isr_common:
     push %fs
     push %gs
 
-    #push fxstate
-    #fxsave fxstate
+    movabs $saved_state, %rax
+    push %rax
+    fxsave64 (%rax)
+
+    mov %cr0, %rax
+    push %rax
+
+    mov %cr2, %rax
+    push %rax
+
+    mov %cr3, %rax
+    push %rax
+
+    mov %cr4, %rax
+    push %rax
 
     mov %rsp, %rdi
 
     call isr_handler
 
-    #fxrstor fxstate
+    pop %rax
+    mov %rax, %cr4
 
-    add $8, %rsp
+    pop %rax
+    mov %rax, %cr3
+
+    pop %rax
+
+    pop %rax
+    mov %rax, %cr0
+
+    pop %rax
+    fxrstor64 (%rax)
+
     pop %gs
     pop %fs
 

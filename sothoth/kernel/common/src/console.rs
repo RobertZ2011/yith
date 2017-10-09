@@ -1,3 +1,5 @@
+use core::fmt::Write;
+
 #[allow(dead_code)]
 #[repr(u8)]
 #[derive(Debug, Clone, Copy)]
@@ -20,7 +22,7 @@ pub enum Color {
     White = 0xF
 }
 
-pub trait Console {
+pub trait Console: Write {
     fn set_foreground(&mut self, fg: Color);
     fn set_background(&mut self, bg: Color);
     fn clear(&mut self);

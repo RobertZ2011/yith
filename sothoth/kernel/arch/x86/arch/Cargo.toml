@@ -5,4 +5,5 @@ authors = ["Rob <robert@zieba.site>"]
 
 [dependencies]
 rlibc = "1.0"
+spin = "0.4.6"
 common = { path = "../../../common" }
