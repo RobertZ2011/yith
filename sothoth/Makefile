@@ -11,10 +11,15 @@ CRTN := build/crtn.o
 
 all: $(ARCH) sothoth.elf
 
+.PHONY: build
+
 clean:
-	-rm build/*.o
-	-rm build/*.a
 	-rm sothoth.elf
+	-rm -r build/*
+	-rmdir build
+
+build:
+	mkdir build
 
 x86:
 	$(eval CC := x86_64-elf-gcc)
@@ -23,6 +28,6 @@ x86:
 	$(eval AR := x86_64-elf-ar)
 	$(eval AS := x86_64-elf-as)
 
-sothoth.elf:
+sothoth.elf: build
 	make -C kernel "ARCH=$(ARCH)"
 	$(LD) $(LDFLAGS) -T kernel/arch/$(ARCH)/linker.ld -o sothoth.elf $(CRTI) $(CRTBEGIN) --start-group build/libkernel.a build/libarch.a --end-group $(CRTEND) $(CRTN)

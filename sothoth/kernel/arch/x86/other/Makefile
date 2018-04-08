@@ -7,10 +7,10 @@ AS := x86_64-elf-as
 CFLAGS := -ffreestanding -fno-builtin -nostdlib -mno-red-zone -Wall -Werror -O2
 CPPFLAGS := $(CFLAGS) -fno-exceptions -fno-rtti -std=c++11
 
-CPPFILES := $(wildcard arc/*.cpp)
+CPPFILES := $(wildcard src/*.cpp)
 ASMNAMES := start.s isr.s
 ASMFILES := $(ASMNAMES:%.s=src/%.s)
-CFILES := $(wildcard arc/*.c)
+CFILES := $(wildcard src/*.c)
 CPPOBJS := $(CPPFILES:%.cpp=%.o)
 ASMOBJS := $(ASMFILES:%.s=%.o)
 COBJS := $(CFILES:%.c=%.o)

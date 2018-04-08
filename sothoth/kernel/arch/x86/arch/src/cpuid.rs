@@ -148,8 +148,8 @@ enum BasicFunction {
     Serial = 0x3,
 }
 
-struct BasicFeatures(u64);
-struct ExtendedFeatures(u64);
+pub struct BasicFeatures(u64);
+pub struct ExtendedFeatures(u64);
 
 #[repr(u32)]
 enum ExtendedFunction {
@@ -164,13 +164,13 @@ enum ExtendedFunction {
     AddressSize = 0x80000008
 }
 
-impl BitAnd for BasicFeatures {
+/*impl BitAnd for BasicFeatures {
     type Output = BasicFeatures;
 
     fn bitand(self, other: BasicFlag) -> Output {
 
     }
-}
+}*/
 
 pub fn read_msr() -> u64 {
     0

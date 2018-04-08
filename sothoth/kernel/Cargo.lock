@@ -1,12 +1,3 @@
-[root]
-name = "kernel"
-version = "0.1.0"
-dependencies = [
- "arch 0.1.0",
- "common 0.1.0",
- "rlibc 1.0.0 (registry+https://github.com/rust-lang/crates.io-index)",
-]
-
 [[package]]
 name = "arch"
 version = "0.1.0"
@@ -21,6 +12,15 @@ name = "common"
 version = "0.1.0"
 dependencies = [
  "spin 0.4.6 (registry+https://github.com/rust-lang/crates.io-index)",
+]
+
+[[package]]
+name = "kernel"
+version = "0.1.0"
+dependencies = [
+ "arch 0.1.0",
+ "common 0.1.0",
+ "rlibc 1.0.0 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
 
 [[package]]

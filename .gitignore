@@ -1,0 +1,6 @@
+*.o
+*.elf
+*.iso
+sothoth/build
+sothoth/kernel/target
+*.lock
