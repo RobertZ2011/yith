@@ -1,0 +1,17 @@
+# The Great OS of Yith
+
+## Components
+
+### Shoggoth
+
+### Sothoth
+
+## Architectures
+
+### x86
+
+#### Building
+Shoggoth requires a 32 bit toolchain. All C/C++ and binutil tools are prefixed with "i686-"
+Sothoth requires a x86_64 toolchain as well and rust nightly and xargo. All C/C++ and binutil tools are prefixed with "x86_64-"
+
+### ARM
